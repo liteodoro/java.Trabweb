@@ -1,0 +1,6 @@
+.textErro{
+    display: none;
+    color: #f00;
+    font-weight: bold;
+    padding: 0 0 0 20px;
+}
