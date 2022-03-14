@@ -12,7 +12,7 @@ const mensagemController = {
         if (mensagem.enviar()) {
             alert("Mensagem enviada!");
         } else {
-            alert("Erro ao enviar a mensagem!");
+            alert("Erro ao enviar!");
         }
     }
 

@@ -1,6 +1,7 @@
 class Produto {
     constructor() {
-        this.nome = "",
+        this.id = null,
+            this.nome = "",
             this.descricao = "",
             this.quant = 0,
             this.valor = 0,
@@ -11,15 +12,15 @@ class Produto {
 
     //Create Read Update Delete (CRUD)
     //Adicionar produto ao armazenamento
-    add(produto) {
+    add() {
         try {
             this.validData();
             var baseProduto = JSON.parse(localStorage.getItem('produtos'));//JSON.parse() -> pega um json e converte em objeto
             if (baseProduto == null) {
                 baseProduto = [];  //Criando Vetor para receber os dados do localstorage
             }
-
-            baseProduto.push(produto); // Adicionando o produto na lista de produtos;
+            this.id = Date.now();
+            baseProduto.push(this); // Adicionando o produto na lista de produtos;
             var produtosJson = JSON.stringify(baseProduto); //Criando JSON dos objetos na baseProduto
             localStorage.setItem('produtos', produtosJson);
             localStorage.setItem("atualizado", new Date().toString());
@@ -41,30 +42,55 @@ class Produto {
     }
 
     //atualizar produtos
+    update() {
+        try {
+            this.validData();
+            var produtos = this.getAll();
+            for (var i = 0; i < produtos.length; i++) {
+                if (produtos[i].id == this.id) {
+                    produtos[i] = this;
+                }
+            }
+            //produtos[index] = produto;
+            var produtosJson = JSON.stringify(produtos);
+            localStorage.setItem('produtos', produtosJson);
+        } catch (ex) {
+            console.error(ex);
+            throw ex;
+        }
+    }
 
     //remover produtos
+    delete(index) {
+        var produtos = this.getAll();
+        produtos.splice(index, 1);
+        var produtosJson = JSON.stringify(produtos);
+        localStorage.setItem('produtos', produtosJson);
+    }
+
 
     //validarDados: passiva
     validData() {
         var erros = "";
         if (!this.nome || this.nome == "") {
-            erros += "Esqueceu o Nome!\n";
+            erros += "Preencha o nome!\n";
         }
 
         if (!this.descricao || this.descricao == "") {
-            erros += "Esqueceu a Descrição!\n";
+            erros += "preencha a descrição!\n";
         }
 
         if (!this.quant || this.quant == 0) {
-            erros += "Esqueceu a Quantidade!\n";
+            erros += "Quantidade vazia!\n";
         }
 
         if (!this.valor || this.valor == 0) {
-            erros += "Falta o Valor!\n";
+            erros += "Preencha valor!\n";
         }
 
         if (erros != "") {
             throw erros;
         }
     }
+
 }

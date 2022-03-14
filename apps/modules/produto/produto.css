@@ -1,6 +1,6 @@
 .textErro{
     display: none;
-    color: #f00;
+    color: red;
     font-weight: bold;
     padding: 0 0 0 20px;
 }
